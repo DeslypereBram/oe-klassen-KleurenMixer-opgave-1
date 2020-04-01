@@ -69,7 +69,18 @@ namespace Kleuren.Lib.Services
             else
             {
                 //Code om nieuwe kleur toe te voegen
+                CheckUniciteitInKleuren(opTeSlaan);
                 Kleuren.Add(opTeSlaan);
+            }
+        }
+
+        static void CheckUniciteitInKleuren(Kleur teChecken)
+        {
+            foreach (Kleur kleur in Kleuren)
+            {
+                if(kleur.Naam.ToUpper() == teChecken.Naam.ToUpper()) throw new Exception($"{kleur.Naam} bestaat reeds");
+                if (String.Join("-", kleur.Rgb) == String.Join("-", teChecken.Rgb)) 
+                    throw new Exception($"{String.Join(", ", kleur.Rgb)} bestaat reeds");
             }
         }
  

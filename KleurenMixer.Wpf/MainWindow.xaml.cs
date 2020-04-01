@@ -68,7 +68,32 @@ namespace KleurenMixer.Wpf
             sldBlauw_ValueChanged(null, null);
         }
 
-        
+        void PasEditModeToe(EditModes editMode)
+        {
+            WijzigBruikbaarheidControls(grdKleur);
+            switch (editMode)
+            {
+                case EditModes.editing:
+                    btnOpslaan.IsEnabled = false;
+                    break;
+                case EditModes.readOnly:
+                    WijzigBruikbaarheidControls(grdKleur, false);
+                    btnNieuw.IsEnabled = true;
+                    break;
+                case EditModes.canSave:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void WijzigBruikbaarheidControls(Panel panel, bool isIngeschakeld = true)
+        {
+            foreach (object control in panel.Children)
+            {
+                ((Control)control).IsEnabled = isIngeschakeld;
+            }
+        }
 
         private void lstKleuren_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -83,6 +108,9 @@ namespace KleurenMixer.Wpf
                 ClearPanel(grdKleur);
                 huidigeKleur = null;
                 lblKleur.Background = Brushes.White;
+                cmbGroen.SelectedIndex = 0;
+                txtRood.Text = "0";
+                PasEditModeToe(EditModes.readOnly);
             }
         }
 
@@ -145,6 +173,7 @@ namespace KleurenMixer.Wpf
             lstKleuren.SelectedItem = null;
             txtNaam.Focus();
             tbkFeedback.Visibility = Visibility.Hidden;
+            PasEditModeToe(EditModes.editing);
         }
 
         private void btnVerwijder_Click(object sender, RoutedEventArgs e)
@@ -161,6 +190,12 @@ namespace KleurenMixer.Wpf
             {
                 ToonMelding(ex.Message);
             }
+        }
+
+        private void txtNaam_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtNaam.Text.Trim().Length >= 3) PasEditModeToe(EditModes.canSave);
+            else PasEditModeToe(EditModes.editing);
         }
     }
 }

@@ -15,10 +15,12 @@ namespace Kleuren.Lib.Entities
 
 		public string Naam
 		{
-			get { return naam; }
+			get { return  naam; }
 			set 
-			{ 
-				naam = value; 
+			{
+				if ((value.Trim()).Length < 3) 
+					throw new Exception("Geef een kleurnaam van minstens 3 letters");
+				else naam = value; 
 			}
 		}
 
