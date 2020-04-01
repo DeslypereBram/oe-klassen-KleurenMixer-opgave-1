@@ -20,8 +20,8 @@
             <Slider x:Name="sldBlauw" HorizontalAlignment="Left" Margin="71,137,0,0" VerticalAlignment="Top" Width="183" Maximum="255" TickPlacement="BottomRight" SnapsToDevicePixels="True" IsSnapToTickEnabled="True"  AutoToolTipPlacement="TopLeft" TabIndex="4" ValueChanged="sldBlauw_ValueChanged"/>
             <TextBox x:Name="txtNaam" HorizontalAlignment="Left" Height="23" Margin="71,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"  TabIndex="0"/>
             <Button x:Name="btnOpslaan" Content="Opslaan" Height="25" Width="65" VerticalAlignment="Top" Margin="100,186,108,0" HorizontalAlignment="Left" TabIndex="6" Click="btnOpslaan_Click"  />
-            <Button x:Name="btnNieuw" Content="Nieuw"  Width="65"  Height="25" VerticalAlignment="Top" Margin="10,186,198,0" HorizontalAlignment="Left" TabIndex="5"/>
-            <Button x:Name="btnVerwijder" Content="Verwijder" Width="65" Height="25" VerticalAlignment="Top" Margin="186,186,21,0" HorizontalAlignment="Left" TabIndex="7" />
+            <Button x:Name="btnNieuw" Content="Nieuw"  Width="65"  Height="25" VerticalAlignment="Top" Margin="10,186,198,0" HorizontalAlignment="Left" TabIndex="5" Click="btnNieuw_Click"/>
+            <Button x:Name="btnVerwijder" Content="Verwijder" Width="65" Height="25" VerticalAlignment="Top" Margin="186,186,21,0" HorizontalAlignment="Left" TabIndex="7" Click="btnVerwijder_Click" />
             <Label x:Name="lblKleur" Content="" HorizontalAlignment="Left" Height="53" Margin="135,71,0,0" VerticalAlignment="Top" Width="106" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
         </Grid>

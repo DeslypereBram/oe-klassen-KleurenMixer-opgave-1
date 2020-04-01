@@ -16,7 +16,10 @@ namespace Kleuren.Lib.Entities
 		public string Naam
 		{
 			get { return naam; }
-			set { naam = value; }
+			set 
+			{ 
+				naam = value; 
+			}
 		}
 
 		private int[] rgb;
@@ -24,7 +27,26 @@ namespace Kleuren.Lib.Entities
 		public int[] Rgb
 		{
 			get { return rgb; }
-			set { rgb = value; }
+			set 
+			{
+				if (value.Length != 3 || !ZijnAlleRgbWaardenGeldig(value)) 
+					throw new Exception("Geef 3 waarden door tussen 0 en 255");
+				else rgb = value; 
+			}
+		}
+
+		bool ZijnAlleRgbWaardenGeldig(int[] rgbWaarden)
+		{
+			bool geldig = true;
+			foreach (int getal in rgbWaarden)
+			{
+				if (getal <0  || getal > 255)
+				{
+					geldig = false;
+					break;
+				}
+			}
+			return geldig;
 		}
 
 		public static int MaxId { get; private set; }

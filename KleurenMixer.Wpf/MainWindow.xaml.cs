@@ -64,8 +64,8 @@ namespace KleurenMixer.Wpf
             txtNaam.Text = gekozenKleur.Naam;
             txtRood.Text = gekozenKleur.Rgb[0].ToString();
             cmbGroen.SelectedItem = gekozenKleur.Rgb[1];
-            sldBlauw_ValueChanged(null, null);
             sldBlauw.Value = gekozenKleur.Rgb[2];
+            sldBlauw_ValueChanged(null, null);
         }
 
         
@@ -78,6 +78,12 @@ namespace KleurenMixer.Wpf
                 ToonDetails(huidigeKleur);
                 ToonKleur(huidigeKleur);
             }
+            else
+            {
+                ClearPanel(grdKleur);
+                huidigeKleur = null;
+                lblKleur.Background = Brushes.White;
+            }
         }
 
         private void ToonKleur(Kleur teTonen)
@@ -88,12 +94,8 @@ namespace KleurenMixer.Wpf
 
         private void sldBlauw_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            int blauwWaarde = (int)sldBlauw.Value;
-            int[] rgb = huidigeKleur.Rgb;
-            lblBlauw.Content = $"Blauw\n{blauwWaarde}";
-            rgb[indexBlauw] = blauwWaarde;
-            huidigeKleur.Rgb = rgb;
-            ToonKleur(huidigeKleur);
+            int blauwWaarde = (int)sldBlauw.Value;   
+            lblBlauw.Content = $"Blauw\n{blauwWaarde}"; 
         }
 
         private void btnOpslaan_Click(object sender, RoutedEventArgs e)
@@ -103,29 +105,62 @@ namespace KleurenMixer.Wpf
             string naam;
             int groenWaarde = (int)cmbGroen.SelectedItem;
             int blauwWaarde = (int)sldBlauw.Value;
+            //We proberen de input in txtRood om te zetten naar een integer. 
+            //Bij fout melding dat de input niet geldig is
             try
             {
                 int roodWaarde = int.Parse(txtRood.Text);
+                //We proberen op basis van de input een kleur aan te maken
+                //Bij een fout tonen we de message die aan de exception gekoppeld
+                try
+                {
+                    int[] rgb;
 
-                int[] rgb;
+                    if (huidigeKleur == null) id = 0;
+                    else id = huidigeKleur.Id;
+                    naam = txtNaam.Text;
+                    rgb = new int[] { roodWaarde, groenWaarde, blauwWaarde };
+                    huidigeKleur = new Kleur(naam, rgb, id);
 
-                if (huidigeKleur == null) id = 0;
-                else id = huidigeKleur.Id;
-                naam = txtNaam.Text;
-                rgb = new int[] { roodWaarde, groenWaarde, blauwWaarde };
-                huidigeKleur = new Kleur(naam, rgb, id);
+                    KleurenBeheer.SlaOp(huidigeKleur);
 
-                KleurenBeheer.SlaOp(huidigeKleur);
-
-                lstKleuren.SelectedItem = null;
-                KoppelDynamischeLijsten();
-                ToonMelding("De kleur is opgeslagen", true);
+                    lstKleuren.SelectedItem = null;
+                    KoppelDynamischeLijsten();
+                    ToonMelding("De kleur is opgeslagen", true);
+                }
+                catch (Exception ex)
+                {
+                    ToonMelding(ex.Message);
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ToonMelding("Geef geldige waarden in");
             }
 
+        }
+
+        private void btnNieuw_Click(object sender, RoutedEventArgs e)
+        {
+            lstKleuren.SelectedItem = null;
+            txtNaam.Focus();
+            tbkFeedback.Visibility = Visibility.Hidden;
+        }
+
+        private void btnVerwijder_Click(object sender, RoutedEventArgs e)
+        {
+            tbkFeedback.Visibility = Visibility.Hidden;
+            try
+            {
+                KleurenBeheer.Verwijder(huidigeKleur);
+                lstKleuren.SelectedItem = null;
+                ToonMelding("Je kleur is verwijderd", true);
+                KoppelDynamischeLijsten();
+            }
+            catch (Exception ex)
+            {
+                ToonMelding(ex.Message);
+            }
         }
     }
 }

@@ -69,7 +69,15 @@ namespace Kleuren.Lib.Services
             else
             {
                 //Code om nieuwe kleur toe te voegen
+                Kleuren.Add(opTeSlaan);
             }
+        }
+ 
+        public static void Verwijder(Kleur teVerwijderen)
+        {
+            if (teVerwijderen != null && HeeftBestaandeIdInKleuren(teVerwijderen))
+                Kleuren.Remove(teVerwijderen);
+            else throw new Exception("Geef een geldige kleur door om te verwijderen");
         }
     }
 }
